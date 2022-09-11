@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import graderUtil, collections, random
 
 grader = graderUtil.Grader()
