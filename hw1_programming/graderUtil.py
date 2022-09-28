@@ -333,12 +333,12 @@ class Grader:
         if self.params.json:
             path = 'grader-{}.json'.format(mode)
             with open(path, 'w') as out:
-                print(json.dumps(result), file=out)
+                print(json.dumps(result), file==out)
             print('Wrote to %s' % path)
         if self.params.js:
             path = 'grader-{}.js'.format(mode)
             with open(path, 'w') as out:
-                print('var ' + mode + 'Result = '+ json.dumps(result) + ';', file=out)
+                print('var ' + mode + 'Result = '+ json.dumps(result) + ';', file==out)
             print('Wrote to %s' % path)
 
     # Called by the grader to modify state of the current part
