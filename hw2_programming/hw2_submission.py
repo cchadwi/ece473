@@ -24,7 +24,17 @@ def lcs_length(s: str, t: str, i: int, j: int) -> int:
     """
 
     # BEGIN_YOUR_CODE (our solution is 6 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    # check if array is empty
+    if i == 0 or j == 0:
+        return 0
+    if s[i-1] == t[j-1]:
+        # If last characters of both sequences match (or X[m-1] == Y[n-1]) then 
+        # L(X[0..m-1], Y[0..n-1]) = 1 + L(X[0..m-2], Y[0..n-2])
+        return 1 + lcs_length(s, t, i-1, j-1)
+    else:
+        # If last characters of both sequences do not match (or X[m-1] != Y[n-1]) then 
+        # L(X[0..m-1], Y[0..n-1]) = MAX ( L(X[0..m-2], Y[0..n-1]), L(X[0..m-1], Y[0..n-2]))
+        return max(lcs_length(s, t, i-1, j), lcs_length(s, t, i, j-1))
     # END_YOUR_CODE
 
 
@@ -39,7 +49,30 @@ def lcs_length_dp(s: str, t: str, i: int, j: int, table=None) -> int:
     """
 
     # BEGIN_YOUR_CODE (our solution is 10 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    
+    '''if i == 0 or j == 0:
+        return 0
+    if s[i-1] == t[j-1]:
+        table[i][j] = 1 + lcs_length_dp(s, t, i-1, j-1, table)
+        return table[i][j]
+    if table[i][j] != -1:
+        return table[i][j]
+    table[i][j] = max(lcs_length_dp(s, t, i, j-1, table), lcs_length_dp(s, t, i-1, j, table))
+    return table[i][j]'''
+
+    if table is None:
+        table = [[-1]*(len(t)+1) for _ in range(len(s)+1)]  # use -1 to indicate empty value 
+        
+    if table[i][j] == -1:
+        if i == 0 or j == 0:
+            table[i][j] = 0
+        elif s[i-1] == t[j-1]:
+            table[i][j] = 1 + lcs_length_dp(s, t, i-1, j-1, table)
+        else:
+            table[i][j] = max(lcs_length_dp(s, t, i-1, j, table), lcs_length_dp(s, t, i, j-1, table))
+
+    return table[i][j]
+
     # END_YOUR_CODE
 
 
@@ -53,7 +86,14 @@ def lcs_length_bu(s: str, t: str, table):
     """
 
     # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    for x in range(len(s)+1):
+        for y in range(len(t)+1):
+            if x == 0 or y == 0:
+                table[x][y]=0
+            elif s[x-1] == t[y-1]:
+                table[x][y] = 1 + table[x-1][y-1]
+            else:
+                table[x][y] = max(table[x-1][y], table[x][y-1])
     # END_YOUR_CODE
 
 
