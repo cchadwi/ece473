@@ -1,5 +1,6 @@
 
 ############################################################
+# https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/ helped a lot in these problems
 # Problem 1a
 def lcs_length(s: str, t: str, i: int, j: int) -> int:
     """Goal: Given two text strings s[0:i] and t[0:j], return the length of their longest common subsequence.
@@ -86,6 +87,7 @@ def lcs_length_bu(s: str, t: str, table):
     """
 
     # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
+    # x and y are temp variables
     for x in range(len(s)+1):
         for y in range(len(t)+1):
             if x == 0 or y == 0:
@@ -109,7 +111,14 @@ def lcs_solution_dp(s: str, t: str) -> str:
     # Table will be filled by lcs_length_dp calls that extract_soln uses to identify the choices needed
     def extract_soln(i: int, j: int):
         # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        if i == 0 or j == 0:
+            return ""
+        if s[i-1] == t[j-1]:
+            return extract_soln(i-1, j-1) + s[i-1]
+        if lcs_length_dp(s, t, i-1, j, table) >= lcs_length_dp(s, t, i, j-1, table):
+            return extract_soln(i-1, j)
+        else:
+            return extract_soln(i, j - 1)
         # END_YOUR_CODE
 
     return extract_soln(len(s), len(t))
@@ -129,7 +138,15 @@ def lcs_solution_bu(s: str, t: str) -> str:
 
     def extract_soln(i: int, j: int):
         # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        if i == 0 or j == 0:
+            return ""
+        if s[i-1] == t[j-1]:
+            return extract_soln(i-1, j-1) + s[i-1]
+
+        if table[i-1][j] >= table[i][j-1]:
+            return extract_soln(i - 1, j)
+        else:
+            return extract_soln(i, j - 1)
         # END_YOUR_CODE
 
     return extract_soln(len(s), len(t))
@@ -159,7 +176,22 @@ def computeLongestPalindromeLength(text):
     up in the increasing order of substring length.
     """
     # BEGIN_YOUR_CODE (our solution is 13 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    tlen = len(text)
+    if tlen == 0:
+        return 0
+    lpl = [[0] * tlen for _ in range(tlen)]
+    for i in range(tlen):
+        lpl[i][i] = 1
+    # k+1 represents the substring length
+    for k in range(1, tlen):
+        for i in range(0, tlen-k):
+            j = i + k
+            if text[i] == text[j]:
+                lpl[i][j] = lpl[i+1][j-1] + 2
+            else:
+                lpl[i][j] = max(lpl[i+1][j], lpl[i][j-1])
+    return lpl[0][-1]
+    
     # END_YOUR_CODE
 
 
